@@ -1,10 +1,18 @@
-FROM python:alpine
+FROM --platform=linux/amd64 python:alpine AS builder
+
+RUN mkdir -p /build
+WORKDIR /build
+ADD . .
+RUN python setup.py sdist
+
+FROM --platform=linux/amd64 python:alpine
 
 # Get latest root certificates
 RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
 
 # Install the required packages
-RUN pip install --no-cache-dir redis flower
+RUN pip install --no-cache-dir redis
+RUN --mount=type=bind,from=builder,source=/build/dist,target=/package pip install /package/*
 
 # PYTHONUNBUFFERED: Force stdin, stdout and stderr to be totally unbuffered. (equivalent to `python -u`)
 # PYTHONHASHSEED: Enable hash randomization (equivalent to `python -R`)
