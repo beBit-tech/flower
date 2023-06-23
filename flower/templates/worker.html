@@ -333,7 +333,7 @@
                 <caption>Configuration options</caption>
                 <tbody>
                   {% for name,value in sorted(worker.get('conf', {}).items()) %}
-                  {% if value is not None %}
+                  {% if value is not None and name.islower() %}
                   <tr>
                     <td><a
                         href="https://docs.celeryq.dev/en/latest/userguide/configuration.html#{{ name.lower().replace('_', '-') }}"
