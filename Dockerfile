@@ -27,6 +27,10 @@ ENV PYTHONPATH ${FLOWER_DATA_DIR}
 
 WORKDIR $FLOWER_DATA_DIR
 
+ADD celeryconfig.py /
+ADD entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
 # Add a user with an explicit UID/GID and create necessary directories
 RUN set -eux; \
     addgroup -g 1000 flower; \
@@ -37,4 +41,4 @@ USER flower
 
 VOLUME $FLOWER_DATA_DIR
 
-CMD ["celery", "flower"]
+ENTRYPOINT ["/entrypoint.sh"]
