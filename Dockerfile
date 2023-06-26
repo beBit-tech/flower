@@ -27,7 +27,6 @@ ENV PYTHONPATH ${FLOWER_DATA_DIR}
 
 WORKDIR $FLOWER_DATA_DIR
 
-ADD celeryconfig.py /
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
